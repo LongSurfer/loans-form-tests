@@ -12,29 +12,29 @@ import org.testng.Assert;
 import java.time.Duration;
 import java.util.List;
 
+import static ph.loans.TestBase.driver;
+
+
 public class Steps {
 
-    WebDriver driver = new ChromeDriver();
-    private final WebElement sliderValue = driver.findElement(By.xpath("//span[@role='needAmount']"));
-    private final String defaultTextOfSliderValue = sliderValue.getText();
-    private final String actualTextOfSliderValue = sliderValue.getText();
-    private final WebElement sliderAmountMinus = driver.findElement(By.xpath("//span[@role='sliderAmountMinus']"));
-    private final WebElement sliderAmountPlus = driver.findElement(By.xpath("//span[@role='sliderAmountPlus']"));
-    private final WebElement getFirstLoanButton = driver.findElement(By.xpath("//input[@role='takeMoneyMain']"));
 
-    private final List<WebElement> warningMessage = driver
-            .findElements(By.xpath("//span[text()='This field is required.']"));
-    private final int countOfAttentionMessage = warningMessage.size();
+    WebElement sliderValue = driver.findElement(By.xpath("//span[@role='needAmount']"));
+    WebElement sliderAmountMinus = driver.findElement(By.xpath("//span[@role='sliderAmountMinus']"));
+    WebElement sliderAmountPlus = driver.findElement(By.xpath("//span[@role='sliderAmountPlus']"));
+    WebElement getFirstLoanButton = driver.findElement(By.xpath("//input[@role='takeMoneyMain']"));
+
+
 
     @When("Make sure the loan amount slider is displayed")
     public void makeSureTheLoanAmountSliderIsDisplayed() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+//        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
         sliderValue.isDisplayed();
     }
 
-    @And("The default amount should be {int} PHP")
-    public void theDefaultAmountShouldBePHP(int arg0) {
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+    @And("The default amount should be {string} PHP")
+    public void theDefaultAmountShouldBePHP(String arg0) {
+//        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        String defaultTextOfSliderValue = sliderValue.getText();
         Assert.assertEquals(defaultTextOfSliderValue, arg0);
     }
 
@@ -46,40 +46,49 @@ public class Steps {
         sliderAmountMinus.click();
     }
 
-    @Then("Make sure that the amount is displayed and is equal to {int} PHP")
-    public void makeSureThatTheAmountIsDisplayedAndIsEqualToPHP(int arg0) {
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+    @Then("Make sure that the amount is displayed and is equal to {string} PHP")
+    public void makeSureThatTheAmountIsDisplayedAndIsEqualToPHP(String arg1) {
+//        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
         sliderValue.isDisplayed();
-        Assert.assertEquals(actualTextOfSliderValue, arg0);
+        String actualTextOfSliderValue = sliderValue.getText();
+        Assert.assertEquals(actualTextOfSliderValue, arg1);
     }
 
-    @When("Click on the {string} button")
+    @When("Click on the 'Get First Loan' button")
     public void clickOnTheGetFirstLoanButton() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+//        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
         getFirstLoanButton.click();
     }
 
-    @Then("Make sure that in the fields First Name, Middle Initial, Last Name and Mobile phone the warning {string} is appeared.")
+    @Then("Make sure that in the fields First Name, Middle Initial, Last Name and Mobile phone the warning 'This field is required' is appeared.")
     public void makeSureThatTheWarningThisFieldIsRequiredIsAppeared() {
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+//        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
+        List<WebElement> warningMessage = driver
+                .findElements(By.xpath("//span[text()='This field is required.']"));
+
+        int countOfAttentionMessage = warningMessage.size();
+
         Assert.assertEquals(countOfAttentionMessage, 4);
         for (WebElement element : warningMessage) {
             Assert.assertTrue(element.isDisplayed());
         }
     }
 
-    @And("Increase the loan amount to {int} PHP")
-    public void increaseTheLoanAmount() {
+    @And("Increase the loan amount to {string} PHP")
+    public void increaseTheLoanAmount(String arg2) {
         sliderAmountPlus.click();
         sliderAmountPlus.click();
         sliderAmountPlus.click();
         sliderAmountPlus.click();
+        String actualTextOfSliderValue = sliderValue.getText();
+        Assert.assertEquals(actualTextOfSliderValue, arg2);
     }
 
-    @Then("Make sure the {string} button is disabled")
+    @Then("Make sure the 'Get First Loan' button is disabled")
     public void makeSureTheButtonIsDisabled() {
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
         Boolean checkGetFirstLoanButtonIsEnabled = getFirstLoanButton.isEnabled();
         Assert.assertEquals(checkGetFirstLoanButtonIsEnabled, false);
     }
+
 }

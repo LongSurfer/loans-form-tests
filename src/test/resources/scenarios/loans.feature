@@ -5,9 +5,9 @@ Feature: Testing loan application form
 
   Scenario: The loan amount cannot be set less than 1000 PHP
     When Make sure the loan amount slider is displayed
-    And The default amount should be 4000 PHP
+    And The default amount should be '4,000' PHP
     And Move the slider all the way to the left and press the minus button
-    Then Make sure that the amount is displayed and is equal to 1000 PHP
+    Then Make sure that the amount is displayed and is equal to '1,000' PHP
 
 
   Scenario: The warning text will be displayed in the empty fields of the application form
@@ -18,6 +18,6 @@ Feature: Testing loan application form
 
   Scenario: The "Get First Loan" button should be disabled if the amount exceeds 7,000 PHP
     When Make sure the loan amount slider is displayed
-    And The default amount should be 4000 PHP
-    And Increase the loan amount to 8000 PHP
-    Then Make sure the "Get First Loan" button is disabled
+    And The default amount should be '4,000' PHP
+    And Increase the loan amount to '8,000' PHP
+    Then Make sure the 'Get First Loan' button is disabled
